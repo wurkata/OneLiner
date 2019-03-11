@@ -21,7 +21,7 @@ data HappyAbsSyn t4 t5 t6 t7 t8 t9 t10 t11
 	| HappyAbsSyn11 t11
 
 happyExpList :: Happy_Data_Array.Array Int Int
-happyExpList = Happy_Data_Array.listArray (0,80) ([0,2048,0,2048,0,128,6144,0,0,4608,0,2048,0,2048,0,8192,24576,16399,0,0,0,0,0,0,6144,0,0,64,24576,16399,6144,0,0,0,0,0,0,0,0,0,0,0,0,0,6144,0,0,0,0,0,0,0,0,0,0,0,6144,0,6144,0,0,256,24576,79,0,0,6144,0,0,0,0,0,0
+happyExpList = Happy_Data_Array.listArray (0,79) ([0,2048,0,2048,0,128,6144,0,0,4608,0,2048,0,2048,0,8192,24576,16399,0,0,0,0,0,0,6144,0,0,64,24576,16399,6144,0,0,0,0,0,0,0,0,0,0,0,0,0,6144,0,0,0,0,512,0,0,0,0,0,0,6144,0,6144,0,0,256,24576,79,0,0,6144,0,0,0,0,0,0
 	])
 
 {-# NOINLINE happyExpListPerState #-}
@@ -135,11 +135,8 @@ action_22 _ = happyReduce_8
 action_23 _ = happyReduce_4
 
 action_24 (26) = happyShift action_5
-action_24 (29) = happyShift action_6
 action_24 _ = happyReduce_2
 
-action_25 (26) = happyShift action_5
-action_25 (29) = happyShift action_6
 action_25 _ = happyReduce_3
 
 action_26 _ = happyReduce_6
