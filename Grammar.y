@@ -42,7 +42,7 @@ Prog : Args Fun                  { Prog $1 $2 }
 
 Args : '<<' Argv '>>'            { Argv $2 }
 
-Fun : '[' AccExp '|' FunExp ']'  { Exp $2 $4 }
+Fun : '[' AccExp '|' FunExp ']'  { Fun $2 $4 }
 
 Argv : IntExp ',' Argv           { $1 : $3 }
      | IntExp                    { [$1] }
@@ -80,7 +80,7 @@ data Prog = Prog Args Fun
 data Args = Argv [IntExp]
           deriving Show
 
-data Fun = Exp [IntExp] [IntExp]
+data Fun = Fun [IntExp] [IntExp]
          deriving Show
 
 data IntExp = IntOp Op IntExp IntExp 
