@@ -18,7 +18,7 @@ main = do
     putStrLn ("Parsed as " ++ (show parsedProg))
     print (interpret inputData parsedProg)
 
-Data ProgOutput = Acc [Int] Prog [Int] 
+data ProgOutput = Acc [Int] Prog [Int] 
 -- interpret* -> 3 args : 1) data to interpret 2) input data 3) acc data
 
 interpret :: [Int] -> Prog -> [[Int]]
@@ -32,7 +32,7 @@ interpretFun :: [Int] -> [Int] -> Fun -> ProgOutput
 interpretFun acc input (Fun exps exps') = Acc accData Prog progData
                                         where accData  = interpretIntExp exps
                                               progData = interpretIntExp exps'
-
+    
 interpretIntExp :: [Int] -> [Int] -> IntExp -> Int
 interpretIntExp acc input (Data n) = input !! (n - 1)
 interpretIntExp acc input (Int n) = n
