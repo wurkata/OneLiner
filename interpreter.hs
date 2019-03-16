@@ -19,6 +19,8 @@ main = do
     print (interpret (head inputData) parsedProg)
 
 
+-- interpret* -> 3 args : 1) data to interpret 2) input data 3) acc data
+
 interpret :: [Int] -> Prog -> [[Int]]
 interpret inputls (Prog argv fun) = interpretArgs inputls argv
 
@@ -29,18 +31,14 @@ interpretArgs inputls (Argv exp) = [[1]]
 interpretIntExp :: [Int] -> IntExp -> Int
 interpretIntExp input (Data n) = input !! (n - 1)
 interpretIntExp input (Int n) = n
-{- interpretIntExp input (IntOp o e e') = interpretIntOp o e e'
+interpretIntExp input (IntOp o e e')  | o == Plus = (v + v')
+                                      | o == Times = (v * v')
+                                      | o == Div = (div v v')
+                                      | o == Pow = (v^v')
+                                      | o == Mod = (mod v v')
+                                      where v = interpretIntExp input e
+                                            v' = interpretIntExp input e'
 
-
-interpretIntOp (IntOp o e e') = case o of 
-                                  Plus -> return v + v'
-                                  Times -> return v * v'
-                                  Div -> return v/v'
-                                  Pow -> return v^v'
-                                  Mod -> return mod v v'
-                                  where v = interpretIntExp e
-                                        v' = interpretIntExp e'
- -}-- interpret* -> 3 args : 1) data to interpret 2) input data 3) acc data
 
 getInts :: [String] -> [[Int]]
 --getInts s = [trace ("with val " ++ (show x)) x| x <- (map words s)]
