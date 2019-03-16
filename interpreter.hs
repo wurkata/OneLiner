@@ -46,6 +46,7 @@ interpretIntExp :: [Int] -> [Int] -> IntExp -> Int
 interpretIntExp acc input (Data n)  | n > 0 = input !! (n - 1)
                                     | otherwise = acc !! (abs n)
 interpretIntExp acc input (Int n) = n
+interpretIntExp acc input (Seq a b) = [a..b]
 interpretIntExp acc input (IntOp o e e')  | o == Plus = (v + v')
                                       | o == Times = (v * v')
                                       | o == Div = (div v v')
