@@ -30,8 +30,10 @@ interpret input (Prog argv fun) = interpret' (interpretArgs argv) input fun
 
 interpret' :: [Int] -> [[Int]] -> Fun -> [[Int]]
 interpret' _ [] _ = []
-interpret' acc input fun = interpret' acc' (tail input) fun
-                         where acc' = accData (interpretFun acc (head input) fun)
+interpret' acc input fun = out' : interpret' acc' (tail input) fun
+                         where  progState = interpretFun acc (head input) fun
+                                acc' = accData progState
+                                out' = progData progState
 
 interpretArgs :: Args -> [Int]
 interpretArgs (Argv exps) = map (\e -> interpretIntExp [] [] e) exps
@@ -41,7 +43,8 @@ interpretFun acc input (Fun exps exps') = state
                                         where state = Output {accData = map (\e -> interpretIntExp acc input e) exps, progData = map(\e -> interpretIntExp acc input e) exps'}
 
 interpretIntExp :: [Int] -> [Int] -> IntExp -> Int
-interpretIntExp acc input (Data n) = input !! (n - 1)
+interpretIntExp acc input (Data n)  | n > 0 = input !! (n - 1)
+                                    | otherwise = acc !! (abs n)
 interpretIntExp acc input (Int n) = n
 interpretIntExp acc input (IntOp o e e')  | o == Plus = (v + v')
                                       | o == Times = (v * v')
@@ -56,14 +59,6 @@ getInts :: [String] -> [[Int]]
 --getInts s = [trace ("with val " ++ (show x)) x| x <- (map words s)]
 getInts s = [map read x| x <- (map words s)]
 
-
-{- myLoop = do done <- isEOF
-            if done
-              then putStrLn "Bye!"
-              else do inp <- getLine
-                      putStrLn (inp)
-                      myLoop
- -}
 getInput :: IO [String]
 getInput = do 
             s <- getContents
@@ -71,10 +66,3 @@ getInput = do
 inter :: [Int] -> Int
 inter [x] = x
 inter (x:xs) = x + inter xs
-{- myLoop :: [Int] -> IO ()
-myLoop l = do done <- isEOF
-            if done
-              then putStrLn "bye"
-              else do inp <- getLine
-                      putStrLn (inp)
-                      myLoop l -}
