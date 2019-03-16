@@ -17,8 +17,12 @@ main = do
     --putStrLn ("Parsed as " ++ (show parsedProg))
 
 
-interpret :: Prog -> [[Int]]
-interpret p = [[5]]
+interpret :: [Int] -> Prog -> [[Int]]
+interpret inputls (Prog argv fun) = interpretArgs inputls argv
+
+interpretArgs :: [Int] -> Args -> [[Int]]
+interpretArgs inputls (Argv exp) = [[1]] 
+
 
 getInts :: [String] -> [[Int]]
 --getInts s = [trace ("with val " ++ (show x)) x| x <- (map words s)]
