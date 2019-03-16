@@ -37,11 +37,14 @@ import Tokens
 %left '=>'
 %% 
 
+App : Fix Prog Fix               { App $1 $2 $3 }
+
+Fix : IntExp                     { Fix [$1] }
+    | {- empty -}                { Fix [] }
+
 Prog : Args Fun                  { Prog $1 $2 }
      | Prog '>' Prog %prec PIPE  { Pipe $1 $3 }
      | Prog '=>' Prog            { Pass $1 $3 }
-
-Prefix : 
 
 Args : '<<' Argv '>>'            { Argv $2 }
 
@@ -62,6 +65,7 @@ FunExp : IntExp '|' FunExp       { $1 : $3 }
 IntExp : IntExp Op IntExp        { IntOp $2 $1 $3 }
        | int                     { Int $1 }
        | data                    { Data $1 }
+       | int '..' int            { Seq $1 $3 }
 
 Op : '+'                         { Plus }
    | '*'                         { Times }
@@ -69,14 +73,21 @@ Op : '+'                         { Plus }
    | '^'                         { Pow }
    | '%'                         { Mod }
    | '='                         { Eq }
-   | '..'                        { Seq }
 { 
 parseError :: [Token] -> a
 parseError _ = error "Parse error" 
 
-data Op = Plus | Times | Div | Pow | Mod | Eq | Seq deriving (Eq, Show)
+data Op = Plus | Times | Div | Pow | Mod | Eq deriving (Eq, Show)
+
+data App = App Fix Prog Fix 
+         deriving Show
+
+data Fix = Fix [IntExp] 
+         deriving Show
 
 data Prog = Prog Args Fun
+          | ProgPrefix Args Fun 
+          | ProgSuffix Args Fun 
           | Pipe Prog Prog
           | Pass Prog Prog
           deriving Show
@@ -90,5 +101,6 @@ data Fun = Fun [IntExp] [IntExp]
 data IntExp = IntOp Op IntExp IntExp 
             | Data Int
             | Int Int
+            | Seq Int Int
             deriving Show
 } 
