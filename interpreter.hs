@@ -3,6 +3,7 @@ import Tokens
 import System.Environment
 import System.IO (isEOF)
 import Debug.Trace
+
 main :: IO ()
 main = do 
     (fileName : _) <- getArgs
@@ -18,20 +19,26 @@ main = do
     putStrLn ("Parsed as " ++ (show parsedProg))
     print (interpret inputData parsedProg)
 
-Data ProgOutput = Acc [Int] Prog [Int] 
+data State = Output { 
+                      accData :: [Int],
+                      progData :: [Int]
+                    } 
 -- interpret* -> 3 args : 1) data to interpret 2) input data 3) acc data
 
-interpret :: [Int] -> Prog -> [[Int]]
-interpret input (Prog argv fun) = interpretFun (interpretArgs argv) input fun 
+interpret :: [[Int]] -> Prog -> [[Int]]
+interpret input (Prog argv fun) = interpret' (interpretArgs argv) input fun
 
-interpretArgs :: [Int] -> Args -> [Int]
-interpretArgs input (Argv exps) = map (\e -> interpretIntExp input e) exps
+interpret' :: [Int] -> [[Int]] -> Fun -> [[Int]]
+interpret' _ [] _ = []
+interpret' acc input fun = interpret' acc' (tail input) fun
+                         where acc' = accData (interpretFun acc (head input) fun)
 
+interpretArgs :: Args -> [Int]
+interpretArgs (Argv exps) = map (\e -> interpretIntExp [] [] e) exps
 
-interpretFun :: [Int] -> [Int] -> Fun -> ProgOutput
-interpretFun acc input (Fun exps exps') = Acc accData Prog progData
-                                        where accData  = interpretIntExp exps
-                                              progData = interpretIntExp exps'
+interpretFun :: [Int] -> [Int] -> Fun -> State
+interpretFun acc input (Fun exps exps') = state
+                                        where state = Output {accData = map (\e -> interpretIntExp acc input e) exps, progData = map(\e -> interpretIntExp acc input e) exps'}
 
 interpretIntExp :: [Int] -> [Int] -> IntExp -> Int
 interpretIntExp acc input (Data n) = input !! (n - 1)
