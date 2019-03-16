@@ -27,6 +27,7 @@ import Tokens
     '>'   { TokenGT } 
     '>>'  { TokenArgsEnd } 
     ','   { TokenComma } 
+    '..'  { TokenSeq }
 
 %nonassoc '>' '<'
 %left '+' '-' 
@@ -39,6 +40,8 @@ import Tokens
 Prog : Args Fun                  { Prog $1 $2 }
      | Prog '>' Prog %prec PIPE  { Pipe $1 $3 }
      | Prog '=>' Prog            { Pass $1 $3 }
+
+Prefix : 
 
 Args : '<<' Argv '>>'            { Argv $2 }
 
@@ -66,11 +69,12 @@ Op : '+'                         { Plus }
    | '^'                         { Pow }
    | '%'                         { Mod }
    | '='                         { Eq }
+   | '..'                        { Seq }
 { 
 parseError :: [Token] -> a
 parseError _ = error "Parse error" 
 
-data Op = Plus | Times | Div | Pow | Mod | Eq deriving (Eq, Show)
+data Op = Plus | Times | Div | Pow | Mod | Eq | Seq deriving (Eq, Show)
 
 data Prog = Prog Args Fun
           | Pipe Prog Prog
