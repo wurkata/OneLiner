@@ -21,11 +21,12 @@ main = do
 Data ProgOutput = Acc [Int] Prog [Int] 
 -- interpret* -> 3 args : 1) data to interpret 2) input data 3) acc data
 
-interpret :: [[Int]] -> Prog -> [[Int]]
-interpret inputls (Prog argv fun) = interpretArgs inputls argv
+interpret :: [Int] -> Prog -> [[Int]]
+interpret input (Prog argv fun) = interpretFun (interpretArgs argv) input fun 
 
-interpretArgs :: [Int] -> Args -> [[Int]]
-interpretArgs inputls (Argv exp) = [[1]] 
+interpretArgs :: [Int] -> Args -> [Int]
+interpretArgs input (Argv exps) = map (\e -> interpretIntExp input e) exps
+
 
 interpretFun :: [Int] -> [Int] -> Fun -> ProgOutput
 interpretFun acc input (Fun exps exps') = Acc accData Prog progData
