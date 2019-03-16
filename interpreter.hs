@@ -20,11 +20,10 @@ main = do
 
 
 interpret :: [Int] -> Prog -> [[Int]]
-interpret inputls (Prog argv fun) = interpretArgs inputls argv
+interpret input (Prog argv fun) = interpretFun (interpretArgs argv) input fun 
 
-interpretArgs :: [Int] -> Args -> [[Int]]
-interpretArgs inputls (Argv exp) = [[1]] 
-
+interpretArgs :: [Int] -> Args -> [Int]
+interpretArgs input (Argv exps) = map (\e -> interpretIntExp input e) exps
 
 interpretIntExp :: [Int] -> IntExp -> Int
 interpretIntExp input (Data n) = input !! (n - 1)
