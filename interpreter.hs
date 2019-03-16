@@ -10,15 +10,23 @@ main = do
     putStrLn ("Parsing : " ++ sourceText)
     s <- getInput
     print $ getInts s
+    let inputData = getInts s
     print s
+    interpret sourceText inputData accData
     --n <- getInput
     --putStrLn("d " ++ (show n))
-    --let parsedProg = parseCalc (alexScanTokens sourceText)
-    --putStrLn ("Parsed as " ++ (show parsedProg))
+    let parsedProg = parseCalc (alexScanTokens sourceText)
+    putStrLn ("Parsed as " ++ (show parsedProg))
+    interpret inputData parsedProg
 
 
 interpret :: Prog -> [[Int]]
 interpret p = [[5]]
+
+interpretIntExp :: IntExp -> Int
+interpretIntExp (Data n) = input !! 3
+interpretIntExp (Int n) = n
+-- interpret* -> 3 args : 1) data to interpret 2) input data 3) acc data
 
 getInts :: [String] -> [[Int]]
 --getInts s = [trace ("with val " ++ (show x)) x| x <- (map words s)]
