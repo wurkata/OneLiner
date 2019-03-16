@@ -12,7 +12,6 @@ main = do
     print $ getInts s
     let inputData = getInts s
     print s
-    interpret sourceText inputData accData
     --n <- getInput
     --putStrLn("d " ++ (show n))
     let parsedProg = parseCalc (alexScanTokens sourceText)
@@ -26,6 +25,7 @@ interpret p = [[5]]
 interpretIntExp :: IntExp -> Int
 interpretIntExp (Data n) = input !! 3
 interpretIntExp (Int n) = n
+interpretIntExp
 -- interpret* -> 3 args : 1) data to interpret 2) input data 3) acc data
 
 getInts :: [String] -> [[Int]]
