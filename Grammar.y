@@ -28,14 +28,16 @@ import Tokens
     '>>'  { TokenArgsEnd } 
     ','   { TokenComma } 
 
-%right in 
+%nonassoc '>' '<'
 %left '+' '-' 
 %left '*' '/' 
 %left NEG 
+%left PIPE 
+%left '=>'
 %% 
 
 Prog : Args Fun                  { Prog $1 $2 }
-     | Prog '>' Prog             { Pipe $1 $3 }
+     | Prog '>' Prog %prec PIPE  { Pipe $1 $3 }
      | Prog '=>' Prog            { Pass $1 $3 }
 
 Args : '<<' Argv '>>'            { Argv $2 }
