@@ -16,28 +16,32 @@ main = do
     --putStrLn("d " ++ (show n))
     let parsedProg = parseCalc (alexScanTokens sourceText)
     putStrLn ("Parsed as " ++ (show parsedProg))
-    print (interpret (head inputData) parsedProg)
+    print (interpret inputData parsedProg)
 
-
+Data ProgOutput = Acc [Int] Prog [Int] 
 -- interpret* -> 3 args : 1) data to interpret 2) input data 3) acc data
 
-interpret :: [Int] -> Prog -> [[Int]]
+interpret :: [[Int]] -> Prog -> [[Int]]
 interpret inputls (Prog argv fun) = interpretArgs inputls argv
 
 interpretArgs :: [Int] -> Args -> [[Int]]
 interpretArgs inputls (Argv exp) = [[1]] 
 
+interpretFun :: [Int] -> [Int] -> Fun -> ProgOutput
+interpretFun acc input (Fun exps exps') = Acc accData Prog progData
+                                        where accData  = interpretIntExp exps
+                                              progData = interpretIntExp exps'
 
-interpretIntExp :: [Int] -> IntExp -> Int
-interpretIntExp input (Data n) = input !! (n - 1)
-interpretIntExp input (Int n) = n
-interpretIntExp input (IntOp o e e')  | o == Plus = (v + v')
+interpretIntExp :: [Int] -> [Int] -> IntExp -> Int
+interpretIntExp acc input (Data n) = input !! (n - 1)
+interpretIntExp acc input (Int n) = n
+interpretIntExp acc input (IntOp o e e')  | o == Plus = (v + v')
                                       | o == Times = (v * v')
                                       | o == Div = (div v v')
                                       | o == Pow = (v^v')
                                       | o == Mod = (mod v v')
-                                      where v = interpretIntExp input e
-                                            v' = interpretIntExp input e'
+                                      where v = interpretIntExp acc input e
+                                            v' = interpretIntExp acc input e'
 
 
 getInts :: [String] -> [[Int]]
