@@ -19,8 +19,12 @@ main = do
     interpret inputData parsedProg
 
 
-interpret :: Prog -> [[Int]]
-interpret p = [[5]]
+interpret :: [Int] -> Prog -> [[Int]]
+interpret inputls (Prog argv fun) = interpretArgs inputls argv
+
+interpretArgs :: [Int] -> Args -> [[Int]]
+interpretArgs inputls (Argv exp) = [[1]] 
+
 
 interpretIntExp :: IntExp -> Int
 interpretIntExp (Data n) = input !! 3
