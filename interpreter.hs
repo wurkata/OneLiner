@@ -10,14 +10,14 @@ main = do
     sourceText <- readFile fileName
     putStrLn ("Parsing : " ++ sourceText)
     s <- getInput
+    putStr ("Input : ")
     print $ getInts s
     let inputData = getInts s
-    --n <- getInput
-    --putStrLn("d " ++ (show n))
     let parsedProg = parseCalc (alexScanTokens sourceText)
-    putStrLn ("Parsed as " ++ (show parsedProg))
-    print (interpret inputData parsedProg)
-
+    let output = interpret inputData parsedProg
+    let strs = map (\row -> join row "\t") output
+    mapM_ putStrLn strs
+    
 data State = Output { 
                       accData :: [Int],
                       progData :: [Int]
@@ -61,13 +61,18 @@ interpretSeq (Seq a b) = [a..b]
 
 
 getInts :: [String] -> [[Int]]
---getInts s = [trace ("with val " ++ (show x)) x| x <- (map words s)]
+--getInts s = [trac`e ("with val " ++ (show x)) x| x <- (map words s)]
 getInts s = [map read x| x <- (map words s)]
 
 getInput :: IO [String]
 getInput = do 
             s <- getContents
             return $ lines s
+
+join :: [Int] -> String -> String
+join [inp] del = show inp
+join (inp:inps) del = (show inp) ++ del ++ join inps del
+
 inter :: [Int] -> Int
 inter [x] = x
 inter (x:xs) = x + inter xs
