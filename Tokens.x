@@ -13,7 +13,9 @@ tokens :-
   $white+       ; 
   "--".*        ; 
   $digit+       { \s -> TokenInt (read s) } 
+  \-$digit+     { \s -> TokenInt (read s) } 
   \$$digit+     { \s -> TokenData (read (tail s)) } 
+  \$\-$digit+   { \s -> TokenData (read (tail s)) } 
   \=            { \s -> TokenEq }
   \+            { \s -> TokenPlus }
   \-            { \s -> TokenMinus }
