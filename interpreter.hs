@@ -26,9 +26,9 @@ data State = Output {
 -- interpret* -> 3 args : 1) data to interpret 2) input data 3) acc data
 
 interpret :: [[Int]] -> App -> [[Int]]
-interpret input (App (Fix prefix) (Prog argv fun) (Fix suffix)) = [prefix'] ++ interpret' (interpretArgs argv) input fun ++ [suffix']
-                                  where prefix' = map (\e -> interpretIntExp [] [] e) prefix
-                                        suffix' = map (\e -> interpretIntExp [] [] e) suffix
+interpret input (App (Fix prefix) (Prog argv fun) (Fix suffix)) = prefix' ++ interpret' (interpretArgs argv) input fun ++ suffix'
+                                  where prefix' = map (\e -> interpretSeq e) prefix
+                                        suffix' = map (\e -> interpretSeq e) suffix
 
 interpret' :: [Int] -> [[Int]] -> Fun -> [[Int]]
 interpret' _ [] _ = []
@@ -48,7 +48,6 @@ interpretIntExp :: [Int] -> [Int] -> IntExp -> Int
 interpretIntExp acc input (Data n)  | n > 0 = input !! (n - 1)
                                     | otherwise = acc !! (abs n)
 interpretIntExp acc input (Int n) = n
-interpretIntExp acc input (Seq a b) = a
 interpretIntExp acc input (IntOp o e e')  | o == Plus = (v + v')
                                       | o == Times = (v * v')
                                       | o == Div = (div v v')
@@ -56,6 +55,9 @@ interpretIntExp acc input (IntOp o e e')  | o == Plus = (v + v')
                                       | o == Mod = (mod v v')
                                       where v = interpretIntExp acc input e
                                             v' = interpretIntExp acc input e'
+
+interpretSeq :: IntExp -> [Int]
+interpretSeq (Seq a b) = [a..b]
 
 
 getInts :: [String] -> [[Int]]
