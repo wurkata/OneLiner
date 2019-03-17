@@ -14,7 +14,9 @@ main = do
     print $ getInts s
     let inputData = getInts s
     let parsedProg = parseCalc (alexScanTokens sourceText)
+    print parsedProg
     let output = interpret inputData parsedProg
+    print output
     let strs = map (\row -> join row "\t") output
     mapM_ putStrLn strs
     
@@ -28,6 +30,10 @@ interpret :: [[Int]] -> App -> [[Int]]
 interpret input (App (Fix prefix) (Prog argv fun) (Fix suffix)) = prefix' ++ interpret' (interpretArgs argv) input fun ++ suffix'
                                   where prefix' = map (\e -> interpretSeq e) prefix
                                         suffix' = map (\e -> interpretSeq e) suffix
+
+interpret input (App prefix (Pipe p1 p2) suffix) = trace ("First is " ++ (show first) ++ " Second is " ++ (show second)) (first ++ second)
+                                  where first  = interpret input (App prefix p1 (Fix []))
+                                        second = interpret input (App (Fix []) p2 suffix)
 
 interpret' :: [Int] -> [[Int]] -> Fun -> [[Int]]
 interpret' _ [] _ = []
@@ -72,6 +78,7 @@ getInput = do
 join :: [Int] -> String -> String
 join [inp] del = show inp
 join (inp:inps) del = (show inp) ++ del ++ join inps del
+join [] del = trace ("Input is empty") []
 
 inter :: [Int] -> Int
 inter [x] = x
