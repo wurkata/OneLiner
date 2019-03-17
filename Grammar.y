@@ -73,6 +73,7 @@ Op : '+'                         { Plus }
    | '^'                         { Pow }
    | '%'                         { Mod }
    | '='                         { Eq }
+
 { 
 parseError :: [Token] -> a
 parseError _ = error "Parse error" 
