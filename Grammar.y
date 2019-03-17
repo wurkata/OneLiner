@@ -63,7 +63,7 @@ FunExp : IntExp '|' FunExp       { $1 : $3 }
        | {- empty -}             { [] }
 
 IntExp : IntExp Op IntExp        { IntOp $2 $1 $3 }
-       | '-' int                 { Int $1 }
+       | '-' int                 { Int $2 }
        | int                     { Int $1 }
        | data                    { Data $1 }
        | int '..' int            { Seq $1 $3 }
@@ -88,8 +88,6 @@ data Fix = Fix [IntExp]
          deriving Show
 
 data Prog = Prog Args Fun
-          | ProgPrefix Args Fun 
-          | ProgSuffix Args Fun 
           | Pipe Prog Prog
           | Pass Prog Prog
           deriving Show
