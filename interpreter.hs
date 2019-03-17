@@ -12,7 +12,6 @@ main = do
     s <- getInput
     print $ getInts s
     let inputData = getInts s
-    print s
     --n <- getInput
     --putStrLn("d " ++ (show n))
     let parsedProg = parseCalc (alexScanTokens sourceText)
@@ -22,7 +21,7 @@ main = do
 data State = Output { 
                       accData :: [Int],
                       progData :: [Int]
-                    } 
+                    } deriving Show
 -- interpret* -> 3 args : 1) data to interpret 2) input data 3) acc data
 
 interpret :: [[Int]] -> App -> [[Int]]
@@ -38,7 +37,8 @@ interpret' acc input fun = out' : interpret' acc' (tail input) fun
                                 out' = progData progState
 
 interpretArgs :: Args -> [Int]
-interpretArgs (Argv exps) = map (\e -> interpretIntExp [] [] e) exps
+interpretArgs (Argv exps) = acc
+                          where acc = map (\e -> interpretIntExp [] [] e) exps
 
 interpretFun :: [Int] -> [Int] -> Fun -> State
 interpretFun acc input (Fun exps exps') = state
