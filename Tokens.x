@@ -28,11 +28,15 @@ tokens :-
   \|            { \s -> TokenVLine }
   \[            { \s -> TokenLSquare}
   \]            { \s -> TokenRSquare}
-  \=\>          { \s -> TokenRArrow }
   \>            { \s -> TokenGT }
   \<            { \s -> TokenLT}
   \,            { \s -> TokenComma }
   \.\.          { \s -> TokenSeq }
+  \?            { \s -> TokenQMark }
+  \:            { \s -> TokenColon }
+  \=\=          { \s -> TokenEqq }
+  \|\|          { \s -> TokenOr }
+  \&\&          { \s -> TokenAnd }
 
 
 { 
@@ -59,7 +63,12 @@ data Token =
   TokenGT          |
   TokenLT          |
   TokenComma       |
-  TokenSeq 
+  TokenSeq         |
+  TokenQMark       |
+  TokenColon       |
+  TokenEqq         |
+  TokenOr          |
+  TokenAnd         
   deriving (Eq,Show) 
 
 splitOn :: String -> String -> String -> [String]
