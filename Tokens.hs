@@ -401,7 +401,7 @@ alexGetByte (_,[],(c:s)) = case utf8Encode c of
 alex_tab_size :: Int
 alex_tab_size = 8
 alex_base :: Array Int Int
-alex_base = listArray (0 :: Int, 37)
+alex_base = listArray (0 :: Int, 35)
   [ -8
   , -74
   , 0
@@ -436,8 +436,6 @@ alex_base = listArray (0 :: Int, 37)
   , 0
   , 0
   , 0
-  , -44
-  , -39
   , 0
   , 0
   ]
@@ -450,7 +448,7 @@ alex_table = listArray (0 :: Int, 988)
   , 13
   , 13
   , 13
-  , 37
+  , 35
   , 18
   , 18
   , 18
@@ -462,10 +460,10 @@ alex_table = listArray (0 :: Int, 988)
   , 18
   , 18
   , 31
-  , 33
   , 0
   , 0
-  , 32
+  , 0
+  , 0
   , 0
   , 0
   , 13
@@ -480,7 +478,7 @@ alex_table = listArray (0 :: Int, 988)
   , 27
   , 22
   , 20
-  , 36
+  , 34
   , 21
   , 7
   , 25
@@ -496,9 +494,9 @@ alex_table = listArray (0 :: Int, 988)
   , 15
   , 0
   , 0
-  , 35
+  , 33
   , 19
-  , 34
+  , 32
   , 8
   , 0
   , 0
@@ -1455,10 +1453,10 @@ alex_check = listArray (0 :: Int, 988)
   , 56
   , 57
   , 62
-  , 62
   , -1
   , -1
-  , 60
+  , -1
+  , -1
   , -1
   , -1
   , 32
@@ -2429,7 +2427,7 @@ alex_check = listArray (0 :: Int, 988)
   ]
 
 alex_deflt :: Array Int Int
-alex_deflt = listArray (0 :: Int, 37)
+alex_deflt = listArray (0 :: Int, 35)
   [ -1
   , 12
   , 12
@@ -2466,11 +2464,9 @@ alex_deflt = listArray (0 :: Int, 37)
   , -1
   , -1
   , -1
-  , -1
-  , -1
   ]
 
-alex_accept = listArray (0 :: Int, 37)
+alex_accept = listArray (0 :: Int, 35)
   [ AlexAccNone
   , AlexAccNone
   , AlexAccNone
@@ -2486,8 +2482,6 @@ alex_accept = listArray (0 :: Int, 37)
   , AlexAccNone
   , AlexAccSkip
   , AlexAccSkip
-  , AlexAcc 22
-  , AlexAcc 21
   , AlexAcc 20
   , AlexAcc 19
   , AlexAcc 18
@@ -2511,33 +2505,31 @@ alex_accept = listArray (0 :: Int, 37)
   , AlexAcc 0
   ]
 
-alex_actions = array (0 :: Int, 23)
-  [ (22,alex_action_2)
-  , (21,alex_action_3)
-  , (20,alex_action_4)
-  , (19,alex_action_5)
-  , (18,alex_action_6)
-  , (17,alex_action_7)
-  , (16,alex_action_8)
-  , (15,alex_action_9)
-  , (14,alex_action_10)
-  , (13,alex_action_11)
-  , (12,alex_action_12)
-  , (11,alex_action_13)
-  , (10,alex_action_14)
-  , (9,alex_action_15)
-  , (8,alex_action_16)
-  , (7,alex_action_17)
-  , (6,alex_action_18)
-  , (5,alex_action_19)
-  , (4,alex_action_20)
-  , (3,alex_action_21)
-  , (2,alex_action_22)
-  , (1,alex_action_23)
-  , (0,alex_action_24)
+alex_actions = array (0 :: Int, 21)
+  [ (20,alex_action_2)
+  , (19,alex_action_3)
+  , (18,alex_action_4)
+  , (17,alex_action_5)
+  , (16,alex_action_6)
+  , (15,alex_action_7)
+  , (14,alex_action_8)
+  , (13,alex_action_9)
+  , (12,alex_action_10)
+  , (11,alex_action_11)
+  , (10,alex_action_12)
+  , (9,alex_action_13)
+  , (8,alex_action_14)
+  , (7,alex_action_15)
+  , (6,alex_action_16)
+  , (5,alex_action_17)
+  , (4,alex_action_18)
+  , (3,alex_action_19)
+  , (2,alex_action_20)
+  , (1,alex_action_21)
+  , (0,alex_action_22)
   ]
 
-{-# LINE 40 "Tokens.x" #-}
+{-# LINE 38 "Tokens.x" #-}
  
 -- Each action has type :: String -> Token 
 -- The token type: 
@@ -2593,12 +2585,10 @@ alex_action_15 =  \s -> TokenVLine
 alex_action_16 =  \s -> TokenLSquare
 alex_action_17 =  \s -> TokenRSquare
 alex_action_18 =  \s -> TokenRArrow 
-alex_action_19 =  \s -> TokenArgsStart 
-alex_action_20 =  \s -> TokenArgsEnd 
-alex_action_21 =  \s -> TokenGT 
-alex_action_22 =  \s -> TokenLT
-alex_action_23 =  \s -> TokenComma 
-alex_action_24 =  \s -> TokenSeq 
+alex_action_19 =  \s -> TokenGT 
+alex_action_20 =  \s -> TokenLT
+alex_action_21 =  \s -> TokenComma 
+alex_action_22 =  \s -> TokenSeq 
 {-# LINE 1 "templates/GenericTemplate.hs" #-}
 {-# LINE 1 "templates/GenericTemplate.hs" #-}
 {-# LINE 1 "<built-in>" #-}

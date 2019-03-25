@@ -29,8 +29,6 @@ tokens :-
   \[            { \s -> TokenLSquare}
   \]            { \s -> TokenRSquare}
   \=\>          { \s -> TokenRArrow }
-  \<\<          { \s -> TokenArgsStart }
-  \>\>          { \s -> TokenArgsEnd }
   \>            { \s -> TokenGT }
   \<            { \s -> TokenLT}
   \,            { \s -> TokenComma }
