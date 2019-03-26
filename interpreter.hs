@@ -62,8 +62,8 @@ interpretIntExp acc input (IntOp o e e')  | o == Plus = (v + v')
                                       where v = interpretIntExp acc input e
                                             v' = interpretIntExp acc input e'
 
-interpretSeq :: IntExp -> [Int]
-interpretSeq (Seq a b) = [a..b]
+interpretSeq :: [Int] -> [Int]
+interpretSeq ls = [(head ls)..(last ls)]
 
 
 getInts :: [String] -> [[Int]]

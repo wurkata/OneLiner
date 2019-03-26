@@ -52,8 +52,8 @@ Argv : IntExp ',' Argv                   { $1 : $3 }
      | IntExp                            { [$1] }
      | {- empty -}                       { [] }
 
-AccExp : IntExp ',' AccExp               { $1 : $3 }
-       | IntExp                          { [$1] }
+AccExp : Exp ',' AccExp                  { $1 : $3 }
+       | Exp                             { [$1] }
        | {- empty -}                     { [] }
 
 FunExp : Exp '|' FunExp                  { $1 : $3 }
@@ -105,7 +105,7 @@ data Prog = Prog Args Fun
 data Args = Argv [IntExp]
           deriving Show
 
-data Fun = Fun [IntExp] [Exp]
+data Fun = Fun [Exp] [Exp]
          deriving Show
 
 data Cond = Stmt BoolExp IntExp IntExp
