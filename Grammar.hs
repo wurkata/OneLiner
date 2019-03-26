@@ -32,7 +32,7 @@ happyExpList = Happy_Data_Array.listArray (0,159) ([0,1,0,256,0,0,512,0,0,512,0,
 {-# NOINLINE happyExpListPerState #-}
 happyExpListPerState st =
     token_strs_expected
-  where token_strs = ["error","%dummy","%start_parseCalc","App","Prog","Args","Fun","Argv","AccExp","FunExp","Exp","Cond","BoolExp","IntExp","Seq","Op","int","data","'='","'+'","'-'","'*'","'/'","'^'","'%'","'('","')'","'|'","'['","']'","'<'","'>'","','","'..'","'?'","':'","'=='","'||'","'&&'","%eof"]
+  where token_strs = ["error","%dummy","%start_parseCalc","App","Prog","Args","Fun","Argv","AccExp","FunExp","Exp","Cond","BoolExp","IntExp","Fix","Op","int","data","'='","'+'","'-'","'*'","'/'","'^'","'%'","'('","')'","'|'","'['","']'","'<'","'>'","','","'..'","'?'","':'","'=='","'||'","'&&'","%eof"]
         bit_start = st * 40
         bit_end = (st + 1) * 40
         read_bit = readArrayBit happyExpList
@@ -644,13 +644,13 @@ happyReduction_30 (HappyTerminal (TokenInt happy_var_3))
 	_
 	(HappyTerminal (TokenInt happy_var_1))
 	 =  HappyAbsSyn15
-		 (Seq (happy_var_1 : happy_var_3 : [])
+		 (Fix (happy_var_1 : happy_var_3 : [])
 	)
 happyReduction_30 _ _ _  = notHappyAtAll 
 
 happyReduce_31 = happySpecReduce_0  15 happyReduction_31
 happyReduction_31  =  HappyAbsSyn15
-		 (Seq []
+		 (Fix []
 	)
 
 happyReduce_32 = happySpecReduce_1  16 happyReduction_32
@@ -759,7 +759,7 @@ parseError _ = error "Parse error"
 data Op = Plus | Times | Div | Pow | Mod | Eq deriving (Eq, Show)
 data Exp = IntExp IntExp | Cond Cond deriving Show
 
-data App = App Seq Prog Seq
+data App = App Fix Prog Fix
          deriving Show
 
 data Prog = Prog Args Fun
@@ -787,7 +787,7 @@ data IntExp = IntOp Op IntExp IntExp
             | Int Int
             deriving Show
 
-data Seq = Seq [Int] 
+data Fix = Fix [Int] 
          deriving Show
 {-# LINE 1 "templates/GenericTemplate.hs" #-}
 {-# LINE 1 "templates/GenericTemplate.hs" #-}
