@@ -51,7 +51,10 @@ interpretFun acc input (Fun exps exps') = state
                                         where state = Output {accData = map (\e -> interpretExp acc input e) exps, progData = map(\e -> interpretExp acc input e) exps'}
 
 interpretExp :: [Int] -> [Int] -> Exp -> Int
-interpretExp acc input (Cond c) = interpretCond acc input c
+interpretExp acc input (Cond c e e') = if evaluatedB then v else v'
+                                        where evaluatedB = interpretCond acc input c
+                                              v = interpretIntExp acc input e
+                                              v' = interpretIntExp acc input e'
 interpretExp acc input (IntExp i) = interpretIntExp acc input i
 
 interpretIntExp :: [Int] -> [Int] -> IntExp -> Int
@@ -66,12 +69,14 @@ interpretIntExp acc input (IntOp o e e')  | o == Plus = (v + v')
                                       where v = interpretIntExp acc input e
                                             v' = interpretIntExp acc input e'
 
-interpretCond :: [Int] -> [Int] -> Cond -> Int
-interpretCond acc input (Stmt b e e') = if evaluatedB then v else v'
-                                         where evaluatedB = interpretBoolExp acc input b
-                                               v = interpretIntExp acc input e
-                                               v' = interpretIntExp acc input e'
-
+interpretCond :: [Int] -> [Int] -> Cond -> Bool
+interpretCond acc input (Stmt b) = interpretBoolExp acc input b
+interpretCond acc input (AND c c') = b && b'
+                                    where b = interpretCond acc input c
+                                          b' = interpretCond acc input c'
+interpretCond acc input (OR c c') = b || b'
+                                    where b = interpretCond acc input c
+                                          b' = interpretCond acc input c'
 interpretBoolExp :: [Int] -> [Int] -> BoolExp -> Bool
 interpretBoolExp acc input (GRT e e') = if v > v' then True else False
                                         where v = interpretIntExp acc input e
