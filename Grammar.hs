@@ -26,7 +26,7 @@ data HappyAbsSyn t4 t5 t6 t7 t8 t9 t10 t11 t12 t13 t14 t15 t16
 	| HappyAbsSyn16 t16
 
 happyExpList :: Happy_Data_Array.Array Int Int
-happyExpList = Happy_Data_Array.listArray (0,159) ([0,1,0,256,0,0,512,0,0,512,0,0,0,256,0,0,32769,0,0,16,0,531,0,0,4,0,492,1,0,0,0,0,0,256,0,0,531,0,0,0,0,531,0,0,0,0,512,0,0,0,0,0,0,0,8,0,0,1,0,24576,0,0,4,60416,4289,0,531,0,60416,5,0,0,0,4864,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,531,0,0,0,0,0,0,0,0,0,0,0,0,24580,0,50668,16,4864,2,0,531,0,4864,2,0,531,0,4864,2,0,531,0,4864,2,0,531,0,0,32,0,2048,0,0,0,0,0,0,60416,4289,0,0,0,60416,2049,0,492,0,60416,1,0,492,0,0,0,0,531,0,4864,2,0,0,0,0,0,0,492,0,0
+happyExpList = Happy_Data_Array.listArray (0,162) ([0,1,0,256,0,0,512,0,0,512,0,0,0,256,0,0,32769,0,0,16,0,531,0,0,4,0,492,1,0,0,0,0,0,256,0,0,531,0,0,0,0,531,0,0,0,0,512,0,0,0,0,0,0,0,8,0,0,1,0,25600,0,0,0,60416,4289,0,531,0,60416,5,0,0,0,4864,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,531,0,0,0,0,0,0,0,0,0,0,0,0,24580,0,50668,16,4864,2,0,531,0,4864,2,0,531,0,4864,2,0,531,0,4864,2,0,531,0,0,32,0,2048,0,0,0,0,0,0,60416,4289,0,0,0,60416,2049,0,492,0,60416,1,0,492,0,0,0,0,531,0,4864,2,0,0,0,0,0,0,492,0,0
 	])
 
 {-# NOINLINE happyExpListPerState #-}
@@ -139,12 +139,12 @@ action_21 _ = happyFail (happyExpListPerState 21)
 action_22 (33) = happyShift action_49
 action_22 _ = happyReduce_11
 
+action_23 (35) = happyShift action_46
 action_23 (38) = happyShift action_47
 action_23 (39) = happyShift action_48
-action_23 _ = happyReduce_16
+action_23 _ = happyFail (happyExpListPerState 23)
 
-action_24 (35) = happyShift action_46
-action_24 _ = happyFail (happyExpListPerState 24)
+action_24 _ = happyReduce_18
 
 action_25 (19) = happyShift action_30
 action_25 (20) = happyShift action_31
@@ -403,7 +403,7 @@ action_66 (23) = happyShift action_33
 action_66 (24) = happyShift action_34
 action_66 (25) = happyShift action_35
 action_66 (16) = happyGoto action_29
-action_66 _ = happyReduce_18
+action_66 _ = happyReduce_16
 
 happyReduce_1 = happySpecReduce_3  4 happyReduction_1
 happyReduction_1 (HappyAbsSyn15  happy_var_3)
@@ -519,12 +519,16 @@ happyReduction_15  =  HappyAbsSyn10
 		 ([]
 	)
 
-happyReduce_16 = happySpecReduce_1  11 happyReduction_16
-happyReduction_16 (HappyAbsSyn12  happy_var_1)
-	 =  HappyAbsSyn11
-		 (Cond happy_var_1
-	)
-happyReduction_16 _  = notHappyAtAll 
+happyReduce_16 = happyReduce 5 11 happyReduction_16
+happyReduction_16 ((HappyAbsSyn14  happy_var_5) `HappyStk`
+	_ `HappyStk`
+	(HappyAbsSyn14  happy_var_3) `HappyStk`
+	_ `HappyStk`
+	(HappyAbsSyn12  happy_var_1) `HappyStk`
+	happyRest)
+	 = HappyAbsSyn11
+		 (Cond happy_var_1 happy_var_3 happy_var_5
+	) `HappyStk` happyRest
 
 happyReduce_17 = happySpecReduce_1  11 happyReduction_17
 happyReduction_17 (HappyAbsSyn14  happy_var_1)
@@ -533,16 +537,12 @@ happyReduction_17 (HappyAbsSyn14  happy_var_1)
 	)
 happyReduction_17 _  = notHappyAtAll 
 
-happyReduce_18 = happyReduce 5 12 happyReduction_18
-happyReduction_18 ((HappyAbsSyn14  happy_var_5) `HappyStk`
-	_ `HappyStk`
-	(HappyAbsSyn14  happy_var_3) `HappyStk`
-	_ `HappyStk`
-	(HappyAbsSyn13  happy_var_1) `HappyStk`
-	happyRest)
-	 = HappyAbsSyn12
-		 (Stmt happy_var_1 happy_var_3 happy_var_5
-	) `HappyStk` happyRest
+happyReduce_18 = happySpecReduce_1  12 happyReduction_18
+happyReduction_18 (HappyAbsSyn13  happy_var_1)
+	 =  HappyAbsSyn12
+		 (Stmt happy_var_1
+	)
+happyReduction_18 _  = notHappyAtAll 
 
 happyReduce_19 = happySpecReduce_3  12 happyReduction_19
 happyReduction_19 (HappyAbsSyn12  happy_var_3)
@@ -756,7 +756,7 @@ parseError :: [Token] -> a
 parseError _ = error "Parse error" 
 
 data Op = Plus | Times | Div | Pow | Mod | Eq deriving (Eq, Show)
-data Exp = IntExp IntExp | Cond Cond deriving Show
+data Exp = IntExp IntExp | Cond Cond IntExp IntExp deriving Show
 
 data App = App Fix Prog Fix
          deriving Show
@@ -771,7 +771,7 @@ data Args = Argv [IntExp]
 data Fun = Fun [Exp] [Exp]
          deriving Show
 
-data Cond = Stmt BoolExp IntExp IntExp
+data Cond = Stmt BoolExp 
           | AND Cond Cond
           | OR Cond Cond
           deriving Show

@@ -60,10 +60,10 @@ FunExp : Exp '|' FunExp                  { $1 : $3 }
        | Exp                             { [$1] }
        | {- empty -}                     { [] }
 
-Exp : Cond                               { Cond $1 }
+Exp : Cond '?' IntExp ':' IntExp         { Cond $1 $3 $5 }
     | IntExp                             { IntExp $1 }
 
-Cond : BoolExp '?' IntExp ':' IntExp     { Stmt $1 $3 $5 }
+Cond : BoolExp                           { Stmt $1 }
      | Cond '&&' Cond                    { AND $1 $3 }
      | Cond '||' Cond                    { OR $1 $3 }
      | '(' Cond ')'                      { $2 }
@@ -93,7 +93,7 @@ parseError :: [Token] -> a
 parseError _ = error "Parse error" 
 
 data Op = Plus | Times | Div | Pow | Mod | Eq deriving (Eq, Show)
-data Exp = IntExp IntExp | Cond Cond deriving Show
+data Exp = IntExp IntExp | Cond Cond IntExp IntExp deriving Show
 
 data App = App Fix Prog Fix
          deriving Show
@@ -108,7 +108,7 @@ data Args = Argv [IntExp]
 data Fun = Fun [Exp] [Exp]
          deriving Show
 
-data Cond = Stmt BoolExp IntExp IntExp
+data Cond = Stmt BoolExp 
           | AND Cond Cond
           | OR Cond Cond
           deriving Show
