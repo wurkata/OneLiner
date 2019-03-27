@@ -8,15 +8,15 @@ main :: IO ()
 main = do 
     (fileName : _) <- getArgs
     sourceText <- readFile fileName
-    putStrLn ("Parsing : " ++ sourceText)
+    --putStrLn ("Parsing : " ++ sourceText)
     s <- getInput
-    putStr ("Input : ")
-    print $ getInts s
+    --putStr ("Input : ")
+    --print $ getInts s
     let inputData = getInts s
     let parsedProg = parseCalc (alexScanTokens sourceText)
-    print parsedProg
+    --print parsedProg
     let output = interpret inputData parsedProg
-    print output
+    --print output
     let strs = map (\row -> join row "\t") output
     mapM_ putStrLn strs
     
