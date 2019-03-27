@@ -28,8 +28,8 @@ data State = Output {
 
 interpret :: [[Int]] -> App -> [[Int]]
 interpret input (App (Fix prefix) (Prog argv fun) (Fix suffix)) = prefix' ++ interpret' (interpretArgs argv) input fun ++ suffix'
-                                  where prefix' = map (\e -> interpretSeq e) prefix
-                                        suffix' = map (\e -> interpretSeq e) suffix
+                                  where prefix' = interpretSeq prefix
+                                        suffix' = interpretSeq suffix
 
 interpret input (App prefix (Pipe p1 p2) suffix) = trace ("First is " ++ (show first) ++ " Second is " ++ (show second)) (first ++ second)
                                   where first  = interpret input (App prefix p1 (Fix []))
@@ -48,7 +48,11 @@ interpretArgs (Argv exps) = acc
 
 interpretFun :: [Int] -> [Int] -> Fun -> State
 interpretFun acc input (Fun exps exps') = state
-                                        where state = Output {accData = map (\e -> interpretIntExp acc input e) exps, progData = map(\e -> interpretIntExp acc input e) exps'}
+                                        where state = Output {accData = map (\e -> interpretExp acc input e) exps, progData = map(\e -> interpretExp acc input e) exps'}
+
+interpretExp :: [Int] -> [Int] -> Exp -> Int
+interpretExp acc input (Cond c) = interpretCond acc input c
+interpretExp acc input (IntExp i) = interpretIntExp acc input i
 
 interpretIntExp :: [Int] -> [Int] -> IntExp -> Int
 interpretIntExp acc input (Data n)  | n > 0 = input !! (n - 1)
@@ -62,8 +66,27 @@ interpretIntExp acc input (IntOp o e e')  | o == Plus = (v + v')
                                       where v = interpretIntExp acc input e
                                             v' = interpretIntExp acc input e'
 
-interpretSeq :: [Int] -> [Int]
-interpretSeq ls = [(head ls)..(last ls)]
+interpretCond :: [Int] -> [Int] -> Cond -> Int
+interpretCond acc input (Stmt b e e') = if evaluatedB then v else v'
+                                         where evaluatedB = interpretBoolExp acc input b
+                                               v = interpretIntExp acc input e
+                                               v' = interpretIntExp acc input e'
+
+interpretBoolExp :: [Int] -> [Int] -> BoolExp -> Bool
+interpretBoolExp acc input (GRT e e') = if v > v' then True else False
+                                        where v = interpretIntExp acc input e
+                                              v' = interpretIntExp acc input e'
+interpretBoolExp acc input (LST e e') = if v < v' then True else False
+                                        where v = interpretIntExp acc input e
+                                              v' = interpretIntExp acc input e'
+interpretBoolExp acc input (EQQ e e') = if v == v' then True else False
+                                        where v = interpretIntExp acc input e
+                                              v' = interpretIntExp acc input e'
+      
+
+interpretSeq :: [Int] -> [[Int]]
+interpretSeq [] = []
+interpretSeq ls = [[x] | x <- [(head ls)..(last ls)]]
 
 
 getInts :: [String] -> [[Int]]
@@ -78,7 +101,7 @@ getInput = do
 join :: [Int] -> String -> String
 join [inp] del = show inp
 join (inp:inps) del = (show inp) ++ del ++ join inps del
-join [] del = trace ("Input is empty") []
+join [] del = []
 
 inter :: [Int] -> Int
 inter [x] = x
