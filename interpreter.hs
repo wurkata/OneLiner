@@ -17,7 +17,9 @@ main = do
     --print parsedProg
     let output = interpret inputData parsedProg
     --print output
-    let strs = map (\row -> join row "\t") output
+    let inputLength = length inputData
+    let output' = take inputLength output
+    let strs = map (\row -> join row "\t") output'
     mapM_ putStrLn strs
     
 data State = Output { 
