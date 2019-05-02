@@ -29,7 +29,7 @@ data State = Output {
 -- interpret* -> 3 args : 1) data to interpret 2) input data 3) acc data
 
 interpret :: [[Int]] -> App -> [[Int]]
-interpret input (App (Fix prefix) (Prog argv fun) (Fix suffix)) = prefix' ++ interpret' (interpretArgs argv) input fun ++ suffix'
+interpret input (App (Fix prefix) (Prog argv fun) (Fix suffix)) = prefix' ++ interpret' (interpretArgs argv (head input)) input fun ++ suffix'
                                   where prefix' = interpretSeq prefix
                                         suffix' = interpretSeq suffix
 
@@ -44,9 +44,9 @@ interpret' acc input fun = out' : interpret' acc' (tail input) fun
                                 acc' = accData progState
                                 out' = progData progState
 
-interpretArgs :: Args -> [Int]
-interpretArgs (Argv exps) = acc
-                          where acc = map (\e -> interpretIntExp [] [] e) exps
+interpretArgs :: Args -> [Int] -> [Int]
+interpretArgs (Argv exps) input = acc
+                          where acc = map (\e -> interpretIntExp [] input e) exps
 
 interpretFun :: [Int] -> [Int] -> Fun -> State
 interpretFun acc input (Fun exps exps') = state
