@@ -102,7 +102,8 @@ They take the form below – a sequence of integers but as it is there – it sh
 ```
 0..3(0,0)[ $-1, $-1 + $0 + $1 | $-1 + $0 + $1 ]
 ```
-ADDITIONAL FEATURES
+
+# ADDITIONAL FEATURES
 - Comments `--` (double dash) – a one-line comment which will be ignored by the parser
 - Error messages – the language does output sensible error message for some mistakes
     - “index too large” - trying to access undefined accumulator or column number
