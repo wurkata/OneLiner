@@ -111,3 +111,45 @@ They take the form below – a sequence of integers but as it is there – it sh
     - `=` (assign operator) – completely ommited to keep the programs coincise
     - ternary-operator – conditional operator instead of if-else statements
     - structure programs in columns to illustrate the idea of streams and keep code neat instead of having scattered code
+
+# Solutions to sample problems
+## Problem 1 :smile:
+```
+0..0[|$1]
+``` 
+## Problem 2 :smiley:
+```
+[|$1|$1]
+``` 
+## Problem 3 :relaxed:
+```
+[|$1+3*$2]
+``` 
+## Problem 4 :grin:
+```
+(0)[$0+$1|$0+$1]
+``` 
+## Problem 5 :sweat_smile:
+```
+(0,-5)[$0+$1,$1|$0+$1|$-1]
+``` 
+## Problem 6 :cold_sweat:
+```
+(0,0)[ $-1, $-1 + $0 + $1 | $-1 + $0 + $1 ]
+``` 
+## Problem 7 :smirk:
+```
+[|$1+$2*-1|$1]
+``` 
+## Problem 8 :smirk:
+```
+(0)[$0+1|$0+$1]
+``` 
+## Problem 9 :scream:
+```
+(0,0,0,0)[$0+$1,$-1+$0,$-2+1,$-2==0 ? $1 : $-3+$1|$-2 == 0 ? $0+$-1+$1 : $0+$-1+$-3+$1]
+``` 
+## Problem 10 :dizzy_face:
+```
+(0,0,0)[$0+1, $0 > 1 ? $1+$-2 : $1, $-1|$0 > 1 ? $1+$-2 : $1|$1|$0|$-1|$-2]
+``` 
